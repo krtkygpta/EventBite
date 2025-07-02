@@ -16,6 +16,46 @@ def create_database(host, user, password, db_name):
         if connection.is_connected():
             cursor = connection.cursor()
             cursor.execute(f"CREATE DATABASE IF NOT EXISTS {db_name}")
+            cursor.execute('''
+CREATE TABLE IF NOT EXISTS users (
+    Name VARCHAR(30),
+    username VARCHAR(30),
+    pwd VARCHAR(30)
+);
+
+CREATE TABLE IF NOT EXISTS events (
+    EventID INT NOT NULL PRIMARY KEY,
+    EventName VARCHAR(60),
+    StartTime TIME,
+    EndTime TIME,
+    Date DATE,
+    VenueID VARCHAR(12),
+    type VARCHAR(30),
+    image VARCHAR(1000),
+    description VARCHAR(1000)
+);
+
+CREATE TABLE IF NOT EXISTS venues (
+    VenueName VARCHAR(30),
+    VenueID VARCHAR(30),
+    RowsColumns VARCHAR(6),
+    NoSeats VARCHAR(500)
+);
+
+CREATE TABLE IF NOT EXISTS tickets (
+    TicketID VARCHAR(100),
+    Username VARCHAR(30),
+    Seats VARCHAR(256),
+    EventID VARCHAR(30),
+    VenueID VARCHAR(30)
+);
+
+
+CREATE TABLE IF NOT EXISTS lockedseats (
+    EventID VARCHAR(30),
+    username VARCHAR(30),
+    seats VARCHAR(100)
+);''')
             print(f"Database '{db_name}' created successfully (or already exists).")
 
     except Error as e:
